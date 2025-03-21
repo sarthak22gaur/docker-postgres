@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: timescale/timescaledb:2.19.0-pg15
+    container_name: postgres15
+    ports:
+      - "5415:5432"
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    networks:
+      - postgres-network
+    restart: unless-stopped
+    command: postgres -c shared_preload_libraries=timescaledb
+
+networks:
+  postgres-network:
+    external: true
